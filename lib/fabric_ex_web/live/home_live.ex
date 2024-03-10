@@ -1,5 +1,6 @@
 defmodule FabricExWeb.HomeLive do
   use FabricExWeb, :live_view
+  alias FabricEx.Fabric
 
   @impl true
   def render(assigns) do
@@ -23,39 +24,18 @@ defmodule FabricExWeb.HomeLive do
           </thead>
         <tbody>
         <!-- row 1 -->
-        <tr>
-          <th>
-            <div class="flex items-center gap-3">
-            <div class="fabric photo">
-              <img src="https://fabrics-store.com/images/product/FS_F_19231680272071_1000x1000.jpg" alt="grey" />
-            </div>
-            </div>
-          </th>
-          <td>1</td>
-          <td>medium</td>
-          <td>grey</td>
-          <td>midweight</td>
-          <td>woven</td>
-          <td>linen</td>
-          <td>59"</td>
-        </tr>
-        <!-- row 2 -->
-        <tr>
-          <th>
-            <div class="flex items-center gap-3">
-            <div class="fabric photo">
-              <img src="https://fabrics-store.com/images/product/FS_F_19231680272071_1000x1000.jpg" alt="grey" />
-            </div>
-          </div>
-          </th>
-          <td>1</td>
-          <td>medium</td>
-          <td>grey</td>
-          <td>midweight</td>
-          <td>woven</td>
-          <td>linen</td>
-          <td>59"</td>
-        </tr>
+        <%= for fabric <- @fabrics do %>
+          <tr>
+            <td><img src={fabric.image} /></td>
+            <td><%= fabric.yards %></td>
+            <td><%= fabric.shade %></td>
+            <td><%= fabric.color %></td>
+            <td><%= fabric.weight %></td>
+            <td><%= fabric.structure %></td>
+            <td><%= fabric.content %></td>
+            <td><%= fabric.width %>"</td>
+          </tr>
+        <% end %>
         </tbody>
       </table>
       </div>
@@ -64,6 +44,8 @@ defmodule FabricExWeb.HomeLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok, assign(socket,
+      fabrics: FabricEx.Repo.all(Fabric)
+  )}
   end
 end
