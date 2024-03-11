@@ -2,6 +2,8 @@ defmodule FabricEx.Fabric do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias FabricEx.Accounts.User
+
   schema "fabrics" do
     field :image, :string
     field :width, :integer
@@ -12,7 +14,7 @@ defmodule FabricEx.Fabric do
     field :structure, :string
     field :yards, :integer
     field :item_number, :string
-    field :user_id, :integer
+    belongs_to :user, User
 
     timestamps(type: :utc_datetime)
   end
