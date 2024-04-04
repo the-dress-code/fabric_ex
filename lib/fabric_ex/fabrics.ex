@@ -1,7 +1,7 @@
 defmodule FabricEx.Fabrics do
   import Ecto.Query, warn: false
   alias FabricEx.Repo
-  alias FabricEx.Fabric
+  alias FabricEx.Fabrics.Fabric
 
   def list_fabrics do
     query =

@@ -1,7 +1,7 @@
 defmodule FabricExWeb.HomeLive do
   use FabricExWeb, :live_view
 
-  alias FabricEx.Fabric
+  alias FabricEx.Fabrics.Fabric
 
   @impl true
   def render(assigns) do

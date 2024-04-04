@@ -1,4 +1,4 @@
-defmodule FabricEx.Fabric do
+defmodule FabricEx.Fabrics.Fabric do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -22,7 +22,29 @@ defmodule FabricEx.Fabric do
   @doc false
   def changeset(fabric, attrs) do
     fabric
-    |> cast(attrs, [:shade, :color, :weight, :content, :structure, :width, :yards, :item_number, :image, :user_id])
-    |> validate_required([:shade, :color, :weight, :content, :structure, :width, :yards, :item_number, :image, :user_id])
+    |> cast(attrs, [
+      :shade,
+      :color,
+      :weight,
+      :content,
+      :structure,
+      :width,
+      :yards,
+      :item_number,
+      :image,
+      :user_id
+    ])
+    |> validate_required([
+      :shade,
+      :color,
+      :weight,
+      :content,
+      :structure,
+      :width,
+      :yards,
+      :item_number,
+      :image,
+      :user_id
+    ])
   end
 end
