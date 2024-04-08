@@ -31,6 +31,11 @@ defmodule FabricExWeb.HomeLive do
       <:col :let={fabric} label="item #"><%= fabric.item_number %></:col>
       <%!-- <:col :let={fabric} label="user"><%= fabric.user_id %></:col> --%>
     </.table>
+    <div class="grid grid-cols-3 gap-4">
+      <%= for fabric <- @fabrics do %>
+        <img src={fabric.image} />
+      <% end %>
+    </div>
     """
   end
 
