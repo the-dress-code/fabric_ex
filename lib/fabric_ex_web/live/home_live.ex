@@ -95,7 +95,11 @@ defmodule FabricExWeb.HomeLive do
 
         {:noreply, socket}
 
-      {:error, _changeset} ->
+      {:error, changeset} ->
+        socket =
+          socket
+          |> put_flash(:error, "Oops! Fabric not added yet..")
+
         {:noreply, socket}
     end
   end
