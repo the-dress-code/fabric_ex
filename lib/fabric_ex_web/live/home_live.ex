@@ -2,6 +2,7 @@ defmodule FabricExWeb.HomeLive do
   use FabricExWeb, :live_view
 
   alias FabricEx.Fabrics.Fabric
+  alias FabricEx.Fabrics
 
   @impl true
   def render(assigns) do
@@ -17,6 +18,19 @@ defmodule FabricExWeb.HomeLive do
         <.button type="submit" phx-disable-with="Saving ...">Add Fabric</.button>
       </.simple_form>
     </.modal>
+    <.table id="fabrics" rows={@fabrics}>
+      <%!-- <:col :let={fabric} label="id"><%= fabric.id %></:col> --%>
+      <:col :let={fabric} label="image"><img src={fabric.image} /></:col>
+      <:col :let={fabric} label="yards"><%= fabric.yards %></:col>
+      <:col :let={fabric} label="shade"><%= fabric.shade %></:col>
+      <:col :let={fabric} label="color"><%= fabric.color %></:col>
+      <:col :let={fabric} label="weight"><%= fabric.weight %></:col>
+      <:col :let={fabric} label="structure"><%= fabric.structure %></:col>
+      <:col :let={fabric} label="content"><%= fabric.content %></:col>
+      <:col :let={fabric} label="width"><%= fabric.width %>"</:col>
+      <:col :let={fabric} label="item #"><%= fabric.item_number %></:col>
+      <%!-- <:col :let={fabric} label="user"><%= fabric.user_id %></:col> --%>
+    </.table>
     """
   end
 
