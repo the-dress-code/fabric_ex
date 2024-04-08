@@ -108,7 +108,7 @@ defmodule FabricExWeb.HomeLive do
     consume_uploaded_entries(socket, :image, fn %{path: path}, _entry ->
       dest = Path.join([:code.priv_dir(:fabric_ex), "static", "uploads", Path.basename(path)])
       File.cp!(path, dest)
-      {:postpone, ~p"/uploads/#Path.basename(dest)}"}
+      {:ok, ~p"/uploads/#{Path.basename(dest)}"}
     end)
   end
 end
