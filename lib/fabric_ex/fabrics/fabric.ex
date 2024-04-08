@@ -42,7 +42,6 @@ defmodule FabricEx.Fabrics.Fabric do
       :structure,
       :width,
       :yards,
-      :item_number,
       :image,
       :user_id
     ])
