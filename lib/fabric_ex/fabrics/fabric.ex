@@ -12,7 +12,7 @@ defmodule FabricEx.Fabrics.Fabric do
     field :weight, :string
     field :content, :string
     field :structure, :string
-    field :yards, :integer
+    field :yards, :float
     field :item_number, :string
     belongs_to :user, User
 

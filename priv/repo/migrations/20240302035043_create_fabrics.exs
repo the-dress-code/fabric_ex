@@ -9,7 +9,7 @@ defmodule FabricEx.Repo.Migrations.CreateFabrics do
       add :content, :string
       add :structure, :string
       add :width, :integer
-      add :yards, :integer
+      add :yards, :float
       add :item_number, :string
       add :image, :string
       add :user_id, :integer
