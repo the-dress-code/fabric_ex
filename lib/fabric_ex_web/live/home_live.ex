@@ -11,10 +11,18 @@ defmodule FabricExWeb.HomeLive do
     <.button type="button" phx-click={show_modal("new-fabric-modal")}>Add Fabric</.button>
 
     <.modal id="new-fabric-modal">
-      <.simple_form for={@form} phx-change="validate" phx-submit="save-fabric">
+      <.simple_form for={@form} phx-change="validate" phx-submit="save_fabric">
+        <.label for={@uploads.image.ref}>Image</.label>
+
         <.live_file_input upload={@uploads.image} required />
-        <.input field={@form[:shade]} type="textarea" label="Shade" required />
-        <.input field={@form[:color]} type="textarea" label="Color" required />
+        <.input field={@form[:yards]} type="number" label="Yards" min=".25" step=".25" required />
+        <.input field={@form[:shade]} type="text" label="Shade" required />
+        <.input field={@form[:color]} type="text" label="Color" required />
+        <.input field={@form[:weight]} type="text" label="Weight" required />
+        <.input field={@form[:structure]} type="text" label="Structure" required />
+        <.input field={@form[:content]} type="text" label="Content" required />
+        <.input field={@form[:width]} type="number" label="Width" required />
+        <.input field={@form[:item_number]} type="text" label="Item #" />
         <.button type="submit" phx-disable-with="Saving ...">Add Fabric</.button>
       </.simple_form>
     </.modal>
@@ -53,10 +61,6 @@ defmodule FabricExWeb.HomeLive do
       |> allow_upload(:image, accept: ~w(.png .jpg), max_entries: 1)
 
     {:ok, socket}
-    # {:ok,
-    #  assign(socket,
-    #    fabrics: FabricEx.Repo.all(Fabric)
-    #  )}
   end
 
   @impl true
