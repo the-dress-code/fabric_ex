@@ -69,8 +69,14 @@ defmodule FabricExWeb.HomeLive do
   end
 
   @impl true
-  def handle_event("validate", _params, socket) do
-    {:noreply, socket}
+  def handle_event("validate", %{"fabric" => fabric_params}, socket) do
+    form =
+      %Fabric{}
+      |> Fabric.changeset(fabric_params)
+      |> Map.put(:action, :validate)
+      |> to_form(as: "fabric")
+
+    {:noreply, socket |> assign(form: form)}
   end
 
   def handle_event("save-fabric", %{"fabric" => fabric_params}, socket) do
