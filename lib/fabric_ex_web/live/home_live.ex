@@ -7,8 +7,11 @@ defmodule FabricExWeb.HomeLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <h1 class="text-2xl">Fabric Stash</h1>
-    <.button type="button" phx-click={show_modal("new-fabric-modal")}>Add Fabric</.button>
+    <div class="py-4">
+      <.button type="button" phx-click={show_modal("new-fabric-modal")}>
+        Add Fabric
+      </.button>
+    </div>
 
     <.modal id="new-fabric-modal">
       <.simple_form for={@form} phx-change="validate" phx-submit="save_fabric">
@@ -26,6 +29,7 @@ defmodule FabricExWeb.HomeLive do
         <.button type="submit" phx-disable-with="Saving ...">Add Fabric</.button>
       </.simple_form>
     </.modal>
+
     <.table id="fabrics" rows={@fabrics}>
       <%!-- <:col :let={fabric} label="id"><%= fabric.id %></:col> --%>
       <:col :let={fabric} label="image"><img src={fabric.image} /></:col>
@@ -39,6 +43,7 @@ defmodule FabricExWeb.HomeLive do
       <:col :let={fabric} label="item #"><%= fabric.item_number %></:col>
       <%!-- <:col :let={fabric} label="user"><%= fabric.user_id %></:col> --%>
     </.table>
+
     <div class="grid grid-cols-3 gap-4">
       <%= for fabric <- @fabrics do %>
         <img src={fabric.image} />
