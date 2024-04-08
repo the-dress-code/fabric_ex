@@ -12,7 +12,7 @@ defmodule FabricEx.Repo.Migrations.CreateFabrics do
       add :yards, :float
       add :item_number, :string
       add :image, :string
-      add :user_id, :integer
+      add :user_id, references(:users, on_delete: :delete_all), null: false
 
       timestamps(type: :utc_datetime)
     end
