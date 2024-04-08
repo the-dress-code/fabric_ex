@@ -79,12 +79,12 @@ defmodule FabricExWeb.HomeLive do
     {:noreply, socket |> assign(form: form)}
   end
 
-  def handle_event("save-fabric", %{"fabric" => fabric_params}, socket) do
+  def handle_event("save_fabric", %{"fabric" => fabric_params}, socket) do
     %{current_user: user} = socket.assigns
 
     fabric_params
-    |> Map.put("user-id", user.id)
-    |> Map.put("image_path", List.first(consume_files(socket)))
+    |> Map.put("user_id", user.id)
+    |> Map.put("image", List.first(consume_files(socket)))
     |> Fabrics.save()
     |> case do
       {:ok, _fabric} ->
