@@ -62,6 +62,7 @@ defmodule FabricExWeb.HomeLive do
     socket =
       socket
       |> assign(form: form)
+      |> assign(page_title: "My Fabric Stash")
       |> assign(fabrics: Fabrics.list_fabrics(socket.assigns.current_user.id))
       |> allow_upload(:image, accept: ~w(.png .jpg), max_entries: 1)
 
