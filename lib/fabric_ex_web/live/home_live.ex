@@ -42,10 +42,16 @@ defmodule FabricExWeb.HomeLive do
       <:col :let={fabric} label="width"><%= fabric.width %>"</:col>
       <:col :let={fabric} label="item #"><%= fabric.item_number %></:col>
       <:action :let={fabric}>
+        <.link method="edit" phx-click="edit_fabric">
+          <.icon name="hero-pencil" class="h-4 w-4" />
+        </.link>
+      </:action>
+      <:action :let={fabric}>
         <.link method="delete" phx-click="delete_fabric" data-confirm="Are you sure?">
           <.icon name="hero-trash" class="h-4 w-4" />
         </.link>
       </:action>
+
       <%!-- <:col :let={fabric} label="user"><%= fabric.user_id %></:col> --%>
     </.table>
 
