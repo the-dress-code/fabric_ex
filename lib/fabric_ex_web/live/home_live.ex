@@ -62,17 +62,21 @@ defmodule FabricExWeb.HomeLive do
       </.simple_form>
     </.modal>
 
-    <.table id="fabrics" rows={@fabrics}>
+    <.table
+      id="fabrics"
+      rows={@fabrics}
+      row_click={fn row -> show_modal("fabric-details-modal-#{row.id}") end}
+    >
       <%!-- <:col :let={fabric} label="id"><%= fabric.id %></:col> --%>
-      <:col :let={fabric} label="image"><img src={fabric.image} /></:col>
-      <:col :let={fabric} label="yards"><%= fabric.yards %></:col>
-      <:col :let={fabric} label="shade"><%= fabric.shade %></:col>
-      <:col :let={fabric} label="color"><%= fabric.color %></:col>
-      <:col :let={fabric} label="weight"><%= fabric.weight %></:col>
-      <:col :let={fabric} label="structure"><%= fabric.structure %></:col>
-      <:col :let={fabric} label="content"><%= fabric.content %></:col>
-      <:col :let={fabric} label="width"><%= fabric.width %>"</:col>
-      <:col :let={fabric} label="item #"><%= fabric.item_number %></:col>
+      <:col :let={fabric} label="Image"><img src={fabric.image} /></:col>
+      <:col :let={fabric} label="Yards"><%= fabric.yards %></:col>
+      <:col :let={fabric} label="Shade"><%= fabric.shade %></:col>
+      <:col :let={fabric} label="Color"><%= fabric.color %></:col>
+      <:col :let={fabric} label="Weight"><%= fabric.weight %></:col>
+      <:col :let={fabric} label="Structure"><%= fabric.structure %></:col>
+      <:col :let={fabric} label="Content"><%= fabric.content %></:col>
+      <:col :let={fabric} label="Width"><%= fabric.width %>"</:col>
+      <:col :let={fabric} label="Item #"><%= fabric.item_number %></:col>
       <:action :let={fabric}>
         <.link method="edit" phx-click="edit_fabric">
           <.icon name="hero-pencil" class="h-4 w-4" />
