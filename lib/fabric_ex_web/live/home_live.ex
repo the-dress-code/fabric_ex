@@ -101,6 +101,21 @@ defmodule FabricExWeb.HomeLive do
         </div>
       <% end %>
     </div>
+
+    <.modal :for={fabric <- @fabrics} id={"fabric-details-modal-#{fabric.id}"}>
+      <div phx-click-away={hide_modal("fabric-details-modal-#{fabric.id}")}>
+        <FabricComponents.details_card selected_fabric={fabric}>
+          <:item title="Yards"><%= fabric.yards %></:item>
+          <:item title="Shade"><%= fabric.shade %></:item>
+          <:item title="Color"><%= fabric.color %></:item>
+          <:item title="Weight"><%= fabric.weight %></:item>
+          <:item title="Structure"><%= fabric.structure %></:item>
+          <:item title="Content"><%= fabric.content %></:item>
+          <:item title="Width"><%= fabric.width %></:item>
+          <:item title="Item #"><%= fabric.item_number %></:item>
+        </FabricComponents.details_card>
+      </div>
+    </.modal>
     """
   end
 
