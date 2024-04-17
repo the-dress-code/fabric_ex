@@ -3,6 +3,7 @@ defmodule FabricExWeb.HomeLive do
 
   alias FabricEx.Fabrics.Fabric
   alias FabricEx.Fabrics
+  alias FabricExWeb.FabricComponents
 
   @impl true
   def render(assigns) do
