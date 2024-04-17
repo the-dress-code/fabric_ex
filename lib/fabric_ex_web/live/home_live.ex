@@ -20,12 +20,43 @@ defmodule FabricExWeb.HomeLive do
 
         <.live_file_input upload={@uploads.image} required />
         <.input field={@form[:yards]} type="number" label="Yards" min=".25" step=".25" required />
-        <.input field={@form[:shade]} type="text" label="Shade" required />
-        <.input field={@form[:color]} type="text" label="Color" required />
-        <.input field={@form[:weight]} type="text" label="Weight" required />
-        <.input field={@form[:structure]} type="text" label="Structure" required />
-        <.input field={@form[:content]} type="text" label="Content" required />
-        <.input field={@form[:width]} type="number" label="Width" required />
+        <.input list="shade_list" field={@form[:shade]} type="search" label="Shade" required />
+        <datalist id="shade_list">
+          <%= for shade_option <- @shade_list do %>
+            <option value={shade_option}></option>
+          <% end %>
+        </datalist>
+        <.input list="color_list" field={@form[:color]} type="search" label="Color" required />
+        <datalist id="color_list">
+          <%= for color_option <- @color_list do %>
+            <option value={color_option}></option>
+          <% end %>
+        </datalist>
+        <.input list="weight_list" field={@form[:weight]} type="search" label="Weight" required />
+        <datalist id="weight_list">
+          <%= for weight_option <- @weight_list do %>
+            <option value={weight_option}></option>
+          <% end %>
+        </datalist>
+        <.input
+          list="structure_list"
+          field={@form[:structure]}
+          type="search"
+          label="Structure"
+          required
+        />
+        <datalist id="structure_list">
+          <%= for structure_option <- @structure_list do %>
+            <option value={structure_option}></option>
+          <% end %>
+        </datalist>
+        <.input list="content_list" field={@form[:content]} type="search" label="Content" required />
+        <datalist id="content_list">
+          <%= for content_option <- @content_list do %>
+            <option value={content_option}></option>
+          <% end %>
+        </datalist>
+        <.input field={@form[:width]} type="number" label="Width in Inches" required />
         <.input field={@form[:item_number]} type="text" label="Item #" />
         <.button type="submit" phx-disable-with="Saving ...">Add Fabric</.button>
       </.simple_form>
