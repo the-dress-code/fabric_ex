@@ -126,11 +126,84 @@ defmodule FabricExWeb.HomeLive do
       |> Fabric.changeset(%{})
       |> to_form(as: "fabric")
 
+    fabrics = Fabrics.list_fabrics(socket.assigns.current_user.id)
+    selected_fabric = List.first(fabrics)
+
     socket =
       socket
       |> assign(form: form)
       |> assign(page_title: "My Fabric Stash")
-      |> assign(fabrics: Fabrics.list_fabrics(socket.assigns.current_user.id))
+      |> assign(fabrics: fabrics)
+      |> assign(selected_fabric: selected_fabric)
+      |> assign(
+        shade_list: [
+          "pastel",
+          "light",
+          "medium",
+          "bright",
+          "dark",
+          "neon"
+        ]
+      )
+      |> assign(
+        color_list: [
+          "blue",
+          "green",
+          "yellow",
+          "orange",
+          "red",
+          "pink",
+          "purple",
+          "teal",
+          "brown",
+          "grey",
+          "black",
+          "white",
+          "beige",
+          "ivory"
+        ]
+      )
+      |> assign(
+        weight_list: [
+          "lightweight",
+          "midweight",
+          "heavyweight"
+        ]
+      )
+      |> assign(
+        structure_list: [
+          "woven",
+          "knit",
+          "nonwoven",
+          "hide",
+          "felt",
+          "lace"
+        ]
+      )
+      |> assign(
+        content_list: [
+          "nylon",
+          "acetate",
+          "acrylic",
+          "polyester",
+          "spandex",
+          "lycra",
+          "rayon",
+          "viscose",
+          "bamboo",
+          "modal",
+          "lyocell",
+          "tencel",
+          "cotton",
+          "linen",
+          "hemp",
+          "silk",
+          "wool",
+          "leather",
+          "fur",
+          "vinyl"
+        ]
+      )
       |> allow_upload(:image, accept: ~w(.png .jpg), max_entries: 1)
 
     {:ok, socket}
