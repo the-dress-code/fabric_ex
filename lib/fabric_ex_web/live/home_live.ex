@@ -93,7 +93,10 @@ defmodule FabricExWeb.HomeLive do
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
       <%= for fabric <- @fabrics do %>
-        <div class="shadow-xl aspect-square">
+        <div
+          phx-click={show_modal("fabric-details-modal-#{fabric.id}")}
+          class="shadow-xl aspect-square"
+        >
           <img class="object-center h-full w-full rounded-lg" src={fabric.image} alt="Fabric" />
         </div>
       <% end %>
