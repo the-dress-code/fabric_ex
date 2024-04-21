@@ -245,6 +245,35 @@ defmodule FabricExWeb.HomeLive do
     end
   end
 
+  def handle_event("delete_fabric", %{"fabric-id" => fabric_id}, socket) do
+    %{current_user: user} = socket.assigns
+
+    fabric_id = String.to_integer(fabric_id)
+
+    {:noreply, socket}
+
+    # fabric_params
+    # |> Map.put("user_id", user.id)
+    # |> Map.put("image", List.first(consume_files(socket)))
+    # |> Fabrics.delete()
+    # |> case do
+    #   {:ok, _fabric} ->
+    #     socket =
+    #       socket
+    #       |> put_flash(:info, "Fabric added successfully!")
+    #       |> push_navigate(to: ~p"/home")
+
+    #     {:noreply, socket}
+
+    #   {:error, changeset} ->
+    #     socket =
+    #       socket
+    #       |> put_flash(:error, "Oops! Fabric not added yet..")
+
+    #     {:noreply, socket}
+    # end
+  end
+
   defp consume_files(socket) do
     consume_uploaded_entries(socket, :image, fn %{path: path}, _entry ->
       dest = Path.join([:code.priv_dir(:fabric_ex), "static", "uploads", Path.basename(path)])
