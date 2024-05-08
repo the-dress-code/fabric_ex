@@ -8,11 +8,15 @@ defmodule FabricExWeb.HomeLive do
   @impl true
   def render(assigns) do
     ~H"""
+    <%!-- Add Fabric button --%>
+
     <div class="py-4">
       <.button type="button" phx-click={show_modal("new-fabric-modal")}>
         Add Fabric
       </.button>
     </div>
+
+    <%!-- New Fabric Modal --%>
 
     <.modal id="new-fabric-modal">
       <.simple_form for={@form} phx-change="validate" phx-submit="save_fabric">
@@ -62,6 +66,8 @@ defmodule FabricExWeb.HomeLive do
       </.simple_form>
     </.modal>
 
+    <%!-- Table-View of All Fabrics --%>
+
     <.table
       id="fabrics"
       rows={@fabrics}
@@ -91,6 +97,8 @@ defmodule FabricExWeb.HomeLive do
       <%!-- <:col :let={fabric} label="user"><%= fabric.user_id %></:col> --%>
     </.table>
 
+    <%!-- Image-Grid-View of All Fabrics--%>
+
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
       <%= for fabric <- @fabrics do %>
         <div
@@ -101,6 +109,8 @@ defmodule FabricExWeb.HomeLive do
         </div>
       <% end %>
     </div>
+
+    <%!-- Fabric Details Modal --%>
 
     <.modal :for={fabric <- @fabrics} id={"fabric-details-modal-#{fabric.id}"}>
       <div phx-click-away={hide_modal("fabric-details-modal-#{fabric.id}")}>
