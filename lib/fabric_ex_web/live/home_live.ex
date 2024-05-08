@@ -285,6 +285,20 @@ defmodule FabricExWeb.HomeLive do
 
     fabric_id = String.to_integer(fabric_id)
 
+  def handle_event("edit_fabric", %{"fabric-id" => fabric_id}, socket) do
+
+  fabric_id = String.to_integer(fabric_id)
+
+    form =
+      Fabrics.get_fabric(fabric_id)
+      |> Fabric.changeset(%{})
+      |> to_form(as: "fabric")
+
+      socket =
+        socket
+        |> assign(:form, form)
+        |> assign(show_modal: true)
+
     {:noreply, socket}
 
     # fabric_params
