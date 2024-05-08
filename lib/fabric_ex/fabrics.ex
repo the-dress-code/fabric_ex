@@ -29,4 +29,9 @@ defmodule FabricEx.Fabrics do
     |> Fabric.changeset(fabric_params)
     |> Repo.insert()
   end
+
+  def delete(fabric_id) when is_integer(fabric_id) do
+    Repo.get(Fabric, fabric_id)
+    |> Repo.delete()
+  end
 end
