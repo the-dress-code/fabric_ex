@@ -126,25 +126,47 @@ defmodule FabricExWeb.HomeLive do
         </FabricComponents.details_card>
       </div>
     </.modal>
+
+        <%!-- Fabric Edit Details Modal --%>
+
+<%= if @show_modal do %>
+
+
+    <.modal id="fabric-edit-details-modal">
+      <div phx-click-away={hide_modal("fabric-edit-details-modal")}>
+        <FabricComponents.edit_details_card
+          form={@form}
+          shade_list={@shade_list}
+          color_list={@color_list}
+          weight_list={@weight_list}
+          structure_list={@structure_list}
+          content_list={@content_list}
+          uploads={@uploads}
+        />
+      </div>
+    </.modal> <% end %>
     """
   end
 
-  @impl true
   def mount(_params, _session, socket) do
+    IO.inspect("Mounting")
+
     form =
       %Fabric{}
       |> Fabric.changeset(%{})
       |> to_form(as: "fabric")
 
     fabrics = Fabrics.list_fabrics(socket.assigns.current_user.id)
-    selected_fabric = List.first(fabrics)
 
     socket =
       socket
+      |> assign(show_modal: false)
       |> assign(form: form)
       |> assign(page_title: "My Fabric Stash")
       |> assign(fabrics: fabrics)
-      |> assign(selected_fabric: selected_fabric)
+
+      # Assigning Input Option Lists
+
       |> assign(
         shade_list: [
           "pastel",
@@ -241,6 +263,9 @@ defmodule FabricExWeb.HomeLive do
       {:ok, _fabric} ->
         socket =
           socket
+          |> update(:fabrics, fn fabrics ->
+            fabrics ++ ["fabric"]
+          end)
           |> put_flash(:info, "Fabric added successfully!")
           |> push_navigate(to: ~p"/home")
 
