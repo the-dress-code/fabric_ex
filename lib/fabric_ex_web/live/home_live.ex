@@ -84,12 +84,17 @@ defmodule FabricExWeb.HomeLive do
       <:col :let={fabric} label="Width"><%= fabric.width %>"</:col>
       <:col :let={fabric} label="Item #"><%= fabric.item_number %></:col>
       <:action :let={fabric}>
-        <.link method="edit" phx-click="edit_fabric">
+        <.link method="edit" phx-click="edit_fabric" phx-value-fabric-id={fabric.id}>
           <.icon name="hero-pencil" class="h-4 w-4" />
         </.link>
       </:action>
       <:action :let={fabric}>
-        <.link method="delete" phx-click="delete_fabric" data-confirm="Are you sure?">
+        <.link
+          method="delete"
+          phx-click="delete_fabric"
+          phx-value-fabric-id={fabric.id}
+          data-confirm="Are you sure?"
+        >
           <.icon name="hero-trash" class="h-4 w-4" />
         </.link>
       </:action>
