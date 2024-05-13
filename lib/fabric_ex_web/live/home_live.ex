@@ -66,16 +66,100 @@ defmodule FabricExWeb.HomeLive do
       </.simple_form>
     </.modal>
 
+    <%!-- Fabric Row Form --%>
+
+    <.simple_form
+      for={@fabric_row_form}
+      phx-change="validate"
+      phx-submit="save_fabric"
+      id="fabric_row_form"
+    >
+      <.label for={@uploads.image.ref}>Image</.label>
+
+      <%!-- <.live_file_input upload={@uploads.image} required /> --%>
+
+      <.input field={@fabric_row_form[:image]} type="text" required />
+      <%!--      <.input
+        field={@fabric_row_form[:yards]}
+        type="number"
+        label="Yards"
+        min=".25"
+        step=".25"
+        required
+      /> --%>
+      <.input list="shade_list" field={@fabric_row_form[:shade]} type="search" label="Shade" required />
+      <datalist id="shade_list">
+        <%= for shade_option <- @shade_list do %>
+          <option value={shade_option}></option>
+        <% end %>
+      </datalist>
+      <.input list="color_list" field={@fabric_row_form[:color]} type="search" label="Color" required />
+      <datalist id="color_list">
+        <%= for color_option <- @color_list do %>
+          <option value={color_option}></option>
+        <% end %>
+      </datalist>
+      <.input
+        list="weight_list"
+        field={@fabric_row_form[:weight]}
+        type="search"
+        label="Weight"
+        required
+      />
+      <datalist id="weight_list">
+        <%= for weight_option <- @weight_list do %>
+          <option value={weight_option}></option>
+        <% end %>
+      </datalist>
+      <.input
+        list="structure_list"
+        field={@fabric_row_form[:structure]}
+        type="search"
+        label="Structure"
+        required
+      />
+      <datalist id="structure_list">
+        <%= for structure_option <- @structure_list do %>
+          <option value={structure_option}></option>
+        <% end %>
+      </datalist>
+      <.input
+        list="content_list"
+        field={@fabric_row_form[:content]}
+        type="search"
+        label="Content"
+        required
+      />
+      <datalist id="content_list">
+        <%= for content_option <- @content_list do %>
+          <option value={content_option}></option>
+        <% end %>
+      </datalist>
+      <.input field={@fabric_row_form[:width]} type="number" label="Width in Inches" required />
+      <.input field={@fabric_row_form[:item_number]} type="text" label="Item #" />
+      <.button type="submit" phx-disable-with="Saving ...">Save Changes</.button>
+    </.simple_form>
+
     <%!-- Table-View of All Fabrics --%>
 
-    <.table
-      id="fabrics"
-      rows={@fabrics}
-      row_click={fn row -> show_modal("fabric-details-modal-#{row.id}") end}
-    >
+    <.table id="fabrics" rows={@fabrics}>
+      <%!-- row_click={fn row -> show_modal("fabric-details-modal-#{row.id}") end} --%>
       <%!-- <:col :let={fabric} label="id"><%= fabric.id %></:col> --%>
       <:col :let={fabric} label="Image"><img src={fabric.image} /></:col>
-      <:col :let={fabric} label="Yards"><%= fabric.yards %></:col>
+      <:col :let={fabric} label="Yards">
+        <.input
+          field={@fabric_row_form[:yards]}
+          form="fabric_row_form"
+          type="number"
+          label="YardsYardsYardsYardsYards"
+          min=".25"
+          step=".25"
+          required
+          class="w-20"
+        />
+
+        <%= fabric.yards %>
+      </:col>
       <:col :let={fabric} label="Shade"><%= fabric.shade %></:col>
       <:col :let={fabric} label="Color"><%= fabric.color %></:col>
       <:col :let={fabric} label="Weight"><%= fabric.weight %></:col>
@@ -132,24 +216,25 @@ defmodule FabricExWeb.HomeLive do
       </div>
     </.modal>
 
-        <%!-- Fabric Edit Details Modal --%>
+    <%!-- Fabric Edit Details Modal --%>
 
-<%= if @show_modal do %>
+    <%!-- To be continued... --%>
 
-
-    <.modal id="fabric-edit-details-modal">
-      <div phx-click-away={hide_modal("fabric-edit-details-modal")}>
-        <FabricComponents.edit_details_card
-          form={@form}
-          shade_list={@shade_list}
-          color_list={@color_list}
-          weight_list={@weight_list}
-          structure_list={@structure_list}
-          content_list={@content_list}
-          uploads={@uploads}
-        />
-      </div>
-    </.modal> <% end %>
+    <%= if @show_modal do %>
+      <.modal id="fabric-edit-details-modal">
+        <div phx-click-away={hide_modal("fabric-edit-details-modal")}>
+          <FabricComponents.edit_details_card
+            form={@form}
+            shade_list={@shade_list}
+            color_list={@color_list}
+            weight_list={@weight_list}
+            structure_list={@structure_list}
+            content_list={@content_list}
+            uploads={@uploads}
+          />
+        </div>
+      </.modal>
+    <% end %>
     """
   end
 
@@ -167,6 +252,7 @@ defmodule FabricExWeb.HomeLive do
       socket
       |> assign(show_modal: false)
       |> assign(form: form)
+      |> assign(fabric_row_form: form)
       |> assign(page_title: "My Fabric Stash")
       |> assign(fabrics: fabrics)
 
@@ -262,7 +348,7 @@ defmodule FabricExWeb.HomeLive do
 
     fabric_params
     |> Map.put("user_id", user.id)
-    |> Map.put("image", List.first(consume_files(socket)))
+    # |> Map.put("image", List.first(consume_files(socket)))
     |> Fabrics.save()
     |> case do
       {:ok, _fabric} ->
@@ -277,6 +363,8 @@ defmodule FabricExWeb.HomeLive do
         {:noreply, socket}
 
       {:error, changeset} ->
+        IO.inspect(changeset)
+
         socket =
           socket
           |> put_flash(:error, "Oops! Fabric not added yet..")
@@ -312,22 +400,19 @@ defmodule FabricExWeb.HomeLive do
   end
 
   def handle_event("edit_fabric", %{"fabric-id" => fabric_id}, socket) do
-
-  fabric_id = String.to_integer(fabric_id)
+    fabric_id = String.to_integer(fabric_id)
 
     form =
       Fabrics.get_fabric(fabric_id)
       |> Fabric.changeset(%{})
       |> to_form(as: "fabric")
 
-      socket =
-        socket
-        |> assign(:form, form)
-        |> assign(show_modal: true)
+    socket =
+      socket
+      |> assign(:fabric_row_form, form)
+      |> assign(show_modal: true)
 
     {:noreply, socket}
-
-
   end
 
   defp consume_files(socket) do

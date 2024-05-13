@@ -14,12 +14,12 @@ defmodule FabricExWeb.FabricComponents do
           </div>
         </dl>
 
-        <%!-- <div class="card-actions justify-end">
+        <div class="card-actions justify-end">
           <button class="btn btn-primary">Edit</button>
         </div>
         <div class="card-actions justify-end">
           <button class="btn btn-primary">Delete</button>
-        </div> --%>
+        </div>
       </div>
     </div>
     """
@@ -71,7 +71,7 @@ defmodule FabricExWeb.FabricComponents do
       </datalist>
       <.input field={@form[:width]} type="number" label="Width in Inches" required />
       <.input field={@form[:item_number]} type="text" label="Item #" />
-      <.button type="submit" phx-disable-with="Saving ...">Add Fabric</.button>
+      <.button type="submit" phx-disable-with="Saving ...">Update Fabric</.button>
     </.simple_form>
     """
   end
