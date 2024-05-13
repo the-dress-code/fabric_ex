@@ -42,3 +42,13 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
+window.addEventListener("phx:js-exec", ({detail}) => {
+  document.querySelectorAll(detail.to).forEach(el => {
+      liveSocket.execJS(el, el.getAttribute(detail.attr))
+  })
+})
+
+window.addEventListener("app:requestSubmit", (event) => {
+  const form = event.target;
+  form.requestSubmit();
+});
