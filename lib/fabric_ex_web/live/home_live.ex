@@ -67,7 +67,6 @@ defmodule FabricExWeb.HomeLive do
       </.simple_form>
     </.modal>
 
-
     <%!-- Fabric Row Form --%>
 
     <.simple_form
@@ -95,13 +94,13 @@ defmodule FabricExWeb.HomeLive do
           <option value={shade_option}></option>
         <% end %>
       </datalist> --%>
-      <.input list="color_list" field={@fabric_row_form[:color]} type="search" label="Color" required />
+      <%!--       <.input list="color_list" field={@fabric_row_form[:color]} type="search" label="Color" required />
       <datalist id="color_list">
         <%= for color_option <- @color_list do %>
           <option value={color_option}></option>
         <% end %>
-      </datalist>
-      <.input
+      </datalist> --%>
+      <%!-- <.input
         list="weight_list"
         field={@fabric_row_form[:weight]}
         type="search"
@@ -112,7 +111,7 @@ defmodule FabricExWeb.HomeLive do
         <%= for weight_option <- @weight_list do %>
           <option value={weight_option}></option>
         <% end %>
-      </datalist>
+      </datalist> --%>
       <.input
         list="structure_list"
         field={@fabric_row_form[:structure]}
@@ -158,7 +157,9 @@ defmodule FabricExWeb.HomeLive do
     >
       <%!-- row_click={fn row -> show_modal("fabric-details-modal-#{row.id}") end} --%>
       <:col :let={fabric} label="Image"><img src={fabric.image} /></:col>
+
       <:col :let={fabric} label="Yards">
+        <%!-- Hidden Yards Input --%>
         <div id={"fabric_row_form_#{fabric.id}_yards_input"} class="min-w-20 hidden">
           <.input
             field={@fabric_row_form[:yards]}
@@ -188,12 +189,47 @@ defmodule FabricExWeb.HomeLive do
           <%= fabric.shade %>
         </div>
       </:col>
-      <:col :let={fabric} label="Color"><%= fabric.color %></:col>
-      <:col :let={fabric} label="Weight"><%= fabric.weight %></:col>
+
+      <:col :let={fabric} label="Color">
+        <%!-- Hidden Color Input --%>
+        <div id={"fabric_row_form_#{fabric.id}_color_input"} class="min-w-20 hidden">
+          <.input list="color_list" field={@fabric_row_form[:color]} type="search" required />
+          <datalist id="color_list">
+            <%= for color_option <- @color_list do %>
+              <option value={color_option}></option>
+            <% end %>
+          </datalist>
+        </div>
+        <%!-- Displayed Color Value --%>
+        <div id={"fabric_row_form_#{fabric.id}_color_value"} class="min-w-20">
+          <%= fabric.color %>
+        </div>
+      </:col>
+
+      <:col :let={fabric} label="Weight">
+        <%!-- Hidden Weight Input --%>
+        <div id={"fabric_row_form_#{fabric.id}_weight_input"} class="min-w-20 hidden">
+          <.input list="weight_list" field={@fabric_row_form[:weight]} type="search" required />
+          <datalist id="weight_list">
+            <%= for weight_option <- @weight_list do %>
+              <option value={weight_option}></option>
+            <% end %>
+          </datalist>
+        </div>
+        <%!-- Displayed Weight Value --%>
+        <div id={"fabric_row_form_#{fabric.id}_weight_value"} class="min-w-20">
+          <%= fabric.weight %>
+        </div>
+      </:col>
+
       <:col :let={fabric} label="Structure"><%= fabric.structure %></:col>
+
       <:col :let={fabric} label="Content"><%= fabric.content %></:col>
+
       <:col :let={fabric} label="Width"><%= fabric.width %>"</:col>
+
       <:col :let={fabric} label="Item #"><%= fabric.item_number %></:col>
+
       <:action :let={fabric}>
         <.link
           id={"cancel_icon_#{fabric.id}"}
