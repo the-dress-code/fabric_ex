@@ -66,6 +66,35 @@ defmodule FabricExWeb.HomeLive do
       </.simple_form>
     </.modal>
 
+    <%!-- Image-Grid-View of All Fabrics--%>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <%= for fabric <- @fabrics do %>
+        <div
+          phx-click={show_modal("fabric-details-modal-#{fabric.id}")}
+          class="shadow-xl aspect-square"
+        >
+          <img class="object-center h-full w-full rounded-lg" src={fabric.image} alt="Fabric" />
+        </div>
+      <% end %>
+    </div>
+
+    <%!-- Fabric Details Modal --%>
+
+    <.modal :for={fabric <- @fabrics} id={"fabric-details-modal-#{fabric.id}"}>
+      <div phx-click-away={hide_modal("fabric-details-modal-#{fabric.id}")}>
+        <FabricComponents.details_card selected_fabric={fabric}>
+          <:item title="Yards"><%= fabric.yards %></:item>
+          <:item title="Shade"><%= fabric.shade %></:item>
+          <:item title="Color"><%= fabric.color %></:item>
+          <:item title="Weight"><%= fabric.weight %></:item>
+          <:item title="Structure"><%= fabric.structure %></:item>
+          <:item title="Content"><%= fabric.content %></:item>
+          <:item title="Width"><%= fabric.width %></:item>
+          <:item title="Item #"><%= fabric.item_number %></:item>
+        </FabricComponents.details_card>
+      </div>
+    </.modal>
     <%!-- Fabric Row Form --%>
 
     <.simple_form
