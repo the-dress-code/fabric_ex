@@ -1,6 +1,7 @@
 defmodule FabricExWeb.HomeLive do
   use FabricExWeb, :live_view
 
+  alias Phoenix.LiveView.JS
   alias FabricEx.Fabrics.Fabric
   alias FabricEx.Fabrics
   alias FabricExWeb.FabricComponents
@@ -95,13 +96,14 @@ defmodule FabricExWeb.HomeLive do
         </FabricComponents.details_card>
       </div>
     </.modal>
+
     <%!-- Fabric Row Form --%>
 
     <.simple_form
       for={@fabric_row_form}
       phx-change="validate"
       phx-submit="save_fabric"
-      id="fabric_row_form"
+      id={"fabric_row_form_#{@fabric_row_form[:id].value}"}
     >
       <.label for={@uploads.image.ref}>Image</.label>
 
@@ -116,12 +118,12 @@ defmodule FabricExWeb.HomeLive do
         step=".25"
         required
       /> --%>
-      <.input list="shade_list" field={@fabric_row_form[:shade]} type="search" label="Shade" required />
+      <%!-- <.input list="shade_list" field={@fabric_row_form[:shade]} type="search" label="Shade" required />
       <datalist id="shade_list">
         <%= for shade_option <- @shade_list do %>
           <option value={shade_option}></option>
         <% end %>
-      </datalist>
+      </datalist> --%>
       <.input list="color_list" field={@fabric_row_form[:color]} type="search" label="Color" required />
       <datalist id="color_list">
         <%= for color_option <- @color_list do %>
@@ -166,30 +168,55 @@ defmodule FabricExWeb.HomeLive do
       </datalist>
       <.input field={@fabric_row_form[:width]} type="number" label="Width in Inches" required />
       <.input field={@fabric_row_form[:item_number]} type="text" label="Item #" />
+      <div class="hidden">
+        <.input field={@fabric_row_form[:id]} type="text" label="Fabric ID" required />
+        <.input field={@fabric_row_form[:user_id]} type="text" label="User ID" required />
+      </div>
       <.button type="submit" phx-disable-with="Saving ...">Save Changes</.button>
     </.simple_form>
 
     <%!-- Table-View of All Fabrics --%>
 
-    <.table id="fabrics" rows={@fabrics}>
+    <.fabric_table
+      id="fabrics"
+      rows={@fabrics}
+      row_id={fn row -> "fabric-#{row.id}" end}
+      row_click={
+        fn row -> if @fabric_row_form[:id].value == row.id, do: show_fabric_row_form(row.id) end
+      }
+    >
       <%!-- row_click={fn row -> show_modal("fabric-details-modal-#{row.id}") end} --%>
-      <%!-- <:col :let={fabric} label="id"><%= fabric.id %></:col> --%>
       <:col :let={fabric} label="Image"><img src={fabric.image} /></:col>
       <:col :let={fabric} label="Yards">
-        <.input
-          field={@fabric_row_form[:yards]}
-          form="fabric_row_form"
-          type="number"
-          label="YardsYardsYardsYardsYards"
-          min=".25"
-          step=".25"
-          required
-          class="w-20"
-        />
+        <div id={"fabric_row_form_#{fabric.id}_yards_input"} class="min-w-20 hidden">
+          <.input
+            field={@fabric_row_form[:yards]}
+            form={"fabric_row_form_#{fabric.id}"}
+            type="number"
+            label=""
+            min=".25"
+            step=".25"
+            required
+          />
+        </div>
 
-        <%= fabric.yards %>
+        <div id={"fabric_row_form_#{fabric.id}_yards_value"} class="min-w-20">
+          <%= fabric.yards %>
+        </div>
       </:col>
-      <:col :let={fabric} label="Shade"><%= fabric.shade %></:col>
+      <:col :let={fabric} label="Shade">
+        <div id={"fabric_row_form_#{fabric.id}_shade_input"} class="min-w-20 hidden">
+          <.input list="shade_list" field={@fabric_row_form[:shade]} type="search" required />
+          <datalist id="shade_list">
+            <%= for shade_option <- @shade_list do %>
+              <option value={shade_option}></option>
+            <% end %>
+          </datalist>
+        </div>
+        <div id={"fabric_row_form_#{fabric.id}_shade_value"} class="min-w-20">
+          <%= fabric.shade %>
+        </div>
+      </:col>
       <:col :let={fabric} label="Color"><%= fabric.color %></:col>
       <:col :let={fabric} label="Weight"><%= fabric.weight %></:col>
       <:col :let={fabric} label="Structure"><%= fabric.structure %></:col>
@@ -197,7 +224,30 @@ defmodule FabricExWeb.HomeLive do
       <:col :let={fabric} label="Width"><%= fabric.width %>"</:col>
       <:col :let={fabric} label="Item #"><%= fabric.item_number %></:col>
       <:action :let={fabric}>
-        <.link method="edit" phx-click="edit_fabric" phx-value-fabric-id={fabric.id}>
+        <.link
+          id={"cancel_icon_#{fabric.id}"}
+          class="hidden"
+          phx-click={hide_fabric_row_form(fabric.id)}
+        >
+          <.icon name="hero-x-mark" class="h-4 w-4" />
+        </.link>
+      </:action>
+      <:action :let={fabric}>
+        <.link
+          id={"save_icon_#{fabric.id}"}
+          class="hidden"
+          phx-click={JS.dispatch("app:requestSubmit", to: "#fabric_row_form_#{fabric.id}")}
+        >
+          <.icon name="hero-check" class="h-4 w-4" />
+        </.link>
+      </:action>
+      <:action :let={fabric}>
+        <.link
+          id={"edit_icon_#{fabric.id}"}
+          method="edit"
+          phx-click="edit_fabric"
+          phx-value-fabric-id={fabric.id}
+        >
           <.icon name="hero-pencil" class="h-4 w-4" />
         </.link>
       </:action>
@@ -213,37 +263,7 @@ defmodule FabricExWeb.HomeLive do
       </:action>
 
       <%!-- <:col :let={fabric} label="user"><%= fabric.user_id %></:col> --%>
-    </.table>
-
-    <%!-- Image-Grid-View of All Fabrics--%>
-
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-      <%= for fabric <- @fabrics do %>
-        <div
-          phx-click={show_modal("fabric-details-modal-#{fabric.id}")}
-          class="shadow-xl aspect-square"
-        >
-          <img class="object-center h-full w-full rounded-lg" src={fabric.image} alt="Fabric" />
-        </div>
-      <% end %>
-    </div>
-
-    <%!-- Fabric Details Modal --%>
-
-    <.modal :for={fabric <- @fabrics} id={"fabric-details-modal-#{fabric.id}"}>
-      <div phx-click-away={hide_modal("fabric-details-modal-#{fabric.id}")}>
-        <FabricComponents.details_card selected_fabric={fabric}>
-          <:item title="Yards"><%= fabric.yards %></:item>
-          <:item title="Shade"><%= fabric.shade %></:item>
-          <:item title="Color"><%= fabric.color %></:item>
-          <:item title="Weight"><%= fabric.weight %></:item>
-          <:item title="Structure"><%= fabric.structure %></:item>
-          <:item title="Content"><%= fabric.content %></:item>
-          <:item title="Width"><%= fabric.width %></:item>
-          <:item title="Item #"><%= fabric.item_number %></:item>
-        </FabricComponents.details_card>
-      </div>
-    </.modal>
+    </.fabric_table>
 
     <%!-- Fabric Edit Details Modal --%>
 
@@ -361,6 +381,28 @@ defmodule FabricExWeb.HomeLive do
     {:ok, socket}
   end
 
+  def show_fabric_row_form(js \\ %JS{}, fabric_id) do
+    js
+    |> JS.show(to: "#fabric_row_form_#{fabric_id}_yards_input")
+    |> JS.hide(to: "#fabric_row_form_#{fabric_id}_yards_value")
+    |> JS.show(to: "#fabric_row_form_#{fabric_id}_shade_input")
+    |> JS.hide(to: "#fabric_row_form_#{fabric_id}_shade_value")
+    |> JS.show(to: "#cancel_icon_#{fabric_id}")
+    |> JS.show(to: "#save_icon_#{fabric_id}")
+    |> JS.hide(to: "#edit_icon_#{fabric_id}")
+  end
+
+  def hide_fabric_row_form(js \\ %JS{}, fabric_id) do
+    js
+    |> JS.hide(to: "#fabric_row_form_#{fabric_id}_yards_input")
+    |> JS.show(to: "#fabric_row_form_#{fabric_id}_yards_value")
+    |> JS.hide(to: "#fabric_row_form_#{fabric_id}_shade_input")
+    |> JS.show(to: "#fabric_row_form_#{fabric_id}_shade_value")
+    |> JS.hide(to: "#cancel_icon_#{fabric_id}")
+    |> JS.hide(to: "#save_icon_#{fabric_id}")
+    |> JS.show(to: "#edit_icon_#{fabric_id}")
+  end
+
   @impl true
   def handle_event("validate", %{"fabric" => fabric_params}, socket) do
     form =
@@ -374,32 +416,61 @@ defmodule FabricExWeb.HomeLive do
 
   def handle_event("save_fabric", %{"fabric" => fabric_params}, socket) do
     %{current_user: user} = socket.assigns
+    IO.inspect(fabric_params: fabric_params)
 
-    fabric_params
-    |> Map.put("user_id", user.id)
-    # |> Map.put("image", List.first(consume_files(socket)))
-    |> Fabrics.save()
-    |> case do
-      {:ok, _fabric} ->
-        socket =
-          socket
-          |> update(:fabrics, fn fabrics ->
-            fabrics ++ ["fabric"]
-          end)
-          |> put_flash(:info, "Fabric added successfully!")
-          |> push_navigate(to: ~p"/home")
+    socket =
+      case Map.get(fabric_params, "id") do
+        nil ->
+          fabric_params
+          |> Map.put("user_id", user.id)
+          |> Map.put("image", List.first(consume_files(socket)))
+          |> Fabrics.save()
+          |> case do
+            {:ok, _fabric} ->
+              socket
+              |> update(:fabrics, fn fabrics ->
+                fabrics ++ ["fabric"]
+              end)
+              |> put_flash(:info, "Fabric added successfully!")
+              |> push_navigate(to: ~p"/home")
 
-        {:noreply, socket}
+            {:error, changeset} ->
+              IO.inspect(changeset)
 
-      {:error, changeset} ->
-        IO.inspect(changeset)
+              socket
+              |> put_flash(:error, "Oops! Fabric not added yet..")
+          end
 
-        socket =
-          socket
-          |> put_flash(:error, "Oops! Fabric not added yet..")
+        id ->
+          fabric_id = String.to_integer(id)
 
-        {:noreply, socket}
-    end
+          updated_fabric_params =
+            fabric_params
+            |> Map.put("id", fabric_id)
+            |> Map.put("user_id", user.id)
+
+          IO.inspect(updated_fabric_params: updated_fabric_params)
+
+          fabric_id
+          |> Fabrics.update(updated_fabric_params)
+          |> case do
+            {:ok, _fabric} ->
+              socket
+              |> update(:fabrics, fn fabrics ->
+                fabrics ++ ["fabric"]
+              end)
+              |> put_flash(:info, "Fabric updated successfully!")
+              |> push_navigate(to: ~p"/home")
+
+            {:error, changeset} ->
+              IO.inspect(changeset)
+
+              socket
+              |> put_flash(:error, "Oops! Fabric not updated...")
+          end
+      end
+
+    {:noreply, socket}
   end
 
   def handle_event("delete_fabric", %{"fabric-id" => fabric_id}, socket) do
@@ -440,6 +511,10 @@ defmodule FabricExWeb.HomeLive do
       socket
       |> assign(:fabric_row_form, form)
       |> assign(show_modal: true)
+      |> push_event("js-exec", %{
+        to: "#fabric-#{fabric_id}",
+        attr: "phx-click"
+      })
 
     {:noreply, socket}
   end
