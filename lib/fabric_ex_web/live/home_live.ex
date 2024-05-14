@@ -171,12 +171,14 @@ defmodule FabricExWeb.HomeLive do
             required
           />
         </div>
-
+        <%!-- Displayed Yards Value --%>
         <div id={"fabric_row_form_#{fabric.id}_yards_value"} class="min-w-20">
           <%= fabric.yards %>
         </div>
       </:col>
+
       <:col :let={fabric} label="Shade">
+        <%!-- Hidden Shade Input AS SEARCH
         <div id={"fabric_row_form_#{fabric.id}_shade_input"} class="min-w-20 hidden">
           <.input list="shade_list" field={@fabric_row_form[:shade]} type="search" required />
           <datalist id="shade_list">
@@ -184,7 +186,20 @@ defmodule FabricExWeb.HomeLive do
               <option value={shade_option}></option>
             <% end %>
           </datalist>
+        </div> --%>
+
+        <%!-- Hidden Shade Input AS SELECT --%>
+
+        <div id={"fabric_row_form_#{fabric.id}_shade_input"} class="min-w-20 hidden">
+          <.input
+            field={@fabric_row_form[:shade]}
+            type="select"
+            options={["pastel", "light", "medium", "bright", "dark", "neon"]}
+            required
+          />
         </div>
+
+        <%!-- Displayed Shade Value --%>
         <div id={"fabric_row_form_#{fabric.id}_shade_value"} class="min-w-20">
           <%= fabric.shade %>
         </div>
@@ -268,8 +283,6 @@ defmodule FabricExWeb.HomeLive do
           <.icon name="hero-trash" class="h-4 w-4" />
         </.link>
       </:action>
-
-      <%!-- <:col :let={fabric} label="user"><%= fabric.user_id %></:col> --%>
     </.fabric_table>
 
     <%!-- Image-Grid-View of All Fabrics--%>
@@ -301,6 +314,7 @@ defmodule FabricExWeb.HomeLive do
         </FabricComponents.details_card>
       </div>
     </.modal>
+
     <%!-- Fabric Edit Details Modal --%>
 
     <%!-- To be continued... --%>
