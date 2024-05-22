@@ -9,7 +9,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "daisyui": "^4.7.2"
+  "devDependencies": {
+    "daisyui": "^4.11.1",
+    "tailwindcss": "^3.4.3"
   }
 }
