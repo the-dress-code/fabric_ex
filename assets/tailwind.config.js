@@ -11,12 +11,8 @@ module.exports = {
     "../lib/fabric_ex_web.ex",
     "../lib/fabric_ex_web/**/*.*ex"
   ],
-  theme: {
-    extend: {
-      colors: {
-        brand: "#FD4F00",
-      }
-    },
+  daisyui: {
+    themes: ["light", "dark"],
   },
   plugins: [
     require("@tailwindcss/forms"),
