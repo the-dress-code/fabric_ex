@@ -50,7 +50,7 @@ defmodule FabricExWeb.CoreComponents do
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
       class="relative z-50 hidden"
     >
-      <div id={"#{@id}-bg"} class="bg-zinc-50/90 fixed inset-0 transition-opacity" aria-hidden="true" />
+      <div id={"#{@id}-bg"} class="fixed inset-0 transition-opacity" aria-hidden="true" />
       <div
         class="fixed inset-0 overflow-y-auto"
         aria-labelledby={"#{@id}-title"}
@@ -66,7 +66,7 @@ defmodule FabricExWeb.CoreComponents do
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-white p-14 shadow-lg ring-1 transition"
+              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-zinc-700 p-14 shadow-lg ring-1 transition"
             >
               <div class="absolute top-6 right-5">
                 <button
@@ -88,6 +88,67 @@ defmodule FabricExWeb.CoreComponents do
     </div>
     """
   end
+
+  # attr :id, :string, required: true
+  # attr :show, :boolean, default: false
+  # attr :on_cancel, JS, default: %JS{}
+  # slot :inner_block, required: true
+
+  # def modal2(assigns) do
+  #   ~H"""
+  #   <dialog
+  #     id={@id}
+  #     phx-mounted={@show && show_modal(@id)}
+  #     phx-remove={hide_modal(@id)}
+  #     data-cancel={JS.exec(@on_cancel, "phx-remove")}
+  #     class="relative z-50 hidden modal"
+  #   >
+  #     <div class="modal-box">
+  #       <h3 class="font-bold text-lg">Hello!</h3>
+  #       <p class="py-4">Press ESC key or click outside to close</p>
+  #     </div>
+  #     <form method="dialog" class="modal-backdrop">
+  #       <button>close</button>
+  #     </form>
+  #   </dialog>
+
+  #   <div id={"#{@id}-bg"} class="fixed inset-0 transition-opacity" aria-hidden="true" />
+  #   <div
+  #     class="fixed inset-0 overflow-y-auto"
+  #     aria-labelledby={"#{@id}-title"}
+  #     aria-describedby={"#{@id}-description"}
+  #     role="dialog"
+  #     aria-modal="true"
+  #     tabindex="0"
+  #   >
+  #     <div class="flex min-h-full items-center justify-center">
+  #       <div class="w-full max-w-3xl p-4 sm:p-6 lg:py-8">
+  #         <.focus_wrap
+  #           id={"#{@id}-container"}
+  #           phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
+  #           phx-key="escape"
+  #           phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
+  #           class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl p-14 shadow-lg ring-1 transition"
+  #         >
+  #           <div class="absolute top-6 right-5">
+  #             <button
+  #               phx-click={JS.exec("data-cancel", to: "##{@id}")}
+  #               type="button"
+  #               class="-m-3 flex-none p-3 opacity-20 hover:opacity-40"
+  #               aria-label={gettext("close")}
+  #             >
+  #               <.icon name="hero-x-mark-solid" class="h-5 w-5" />
+  #             </button>
+  #           </div>
+  #           <div id={"#{@id}-content"}>
+  #             <%= render_slot(@inner_block) %>
+  #           </div>
+  #         </.focus_wrap>
+  #       </div>
+  #     </div>
+  #   </div>
+  #   """
+  # end
 
   @doc """
   Renders flash notices.
@@ -202,7 +263,7 @@ defmodule FabricExWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 bg-white">
+      <div class="mt-10 space-y-8">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -231,8 +292,8 @@ defmodule FabricExWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
+        "phx-submit-loading:opacity-75 rounded-lg btn py-2 px-3",
+        "text-sm font-semibold leading-6",
         @class
       ]}
       {@rest}
@@ -310,7 +371,7 @@ defmodule FabricExWeb.CoreComponents do
 
     ~H"""
     <div phx-feedback-for={@name}>
-      <label class="flex items-center gap-4 text-sm leading-6 text-zinc-600">
+      <label class="flex items-center gap-4 text-sm leading-6">
         <input type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
@@ -318,7 +379,7 @@ defmodule FabricExWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
+          class="rounded checkbox focus:ring-0"
           {@rest}
         />
         <%= @label %>
@@ -335,7 +396,7 @@ defmodule FabricExWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
+        class="mt-2 block w-full select rounded-md border border-gray-300 shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
         multiple={@multiple}
         {@rest}
       >
@@ -355,8 +416,8 @@ defmodule FabricExWeb.CoreComponents do
         id={@id}
         name={@name}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
-          "min-h-[6rem] phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
+          "mt-2 block w-full textarea rounded-lg focus:ring-0 sm:text-sm sm:leading-6",
+          "min-h-[6rem] ",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -378,7 +439,7 @@ defmodule FabricExWeb.CoreComponents do
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
+          "mt-2 block w-full input rounded-lg focus:ring-0 sm:text-sm sm:leading-6",
           "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
@@ -398,7 +459,7 @@ defmodule FabricExWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label for={@for} class="block text-sm font-semibold leading-6">
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -431,10 +492,10 @@ defmodule FabricExWeb.CoreComponents do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
+        <h1 class="text-lg font-semibold leading-8">
           <%= render_slot(@inner_block) %>
         </h1>
-        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
+        <p :if={@subtitle != []} class="mt-2 text-sm leading-6">
           <%= render_slot(@subtitle) %>
         </p>
       </div>
@@ -477,7 +538,7 @@ defmodule FabricExWeb.CoreComponents do
     ~H"""
     <div class="overflow-y-auto px-4 sm:overflow-visible sm:px-0">
       <table class="w-[40rem] mt-11 sm:w-full">
-        <thead class="text-sm text-left leading-6 text-zinc-500">
+        <thead class="text-sm text-left leading-6">
           <tr>
             <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal"><%= col[:label] %></th>
             <th :if={@action != []} class="relative p-0 pb-4">
@@ -488,28 +549,25 @@ defmodule FabricExWeb.CoreComponents do
         <tbody
           id={@id}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
+          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6"
         >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-zinc-50">
+          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group">
             <td
               :for={{col, i} <- Enum.with_index(@col)}
               phx-click={@row_click && @row_click.(row)}
               class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div class="block py-4 pr-6">
-                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
-                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
+                <span class="absolute -inset-y-px right-0 -left-4  sm:rounded-l-xl" />
+                <span class={["relative", i == 0 && "font-semibold"]}>
                   <%= render_slot(col, @row_item.(row)) %>
                 </span>
               </div>
             </td>
             <td :if={@action != []} class="relative w-14 p-0">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
-                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
-                <span
-                  :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-                >
+                <span class="absolute -inset-y-px -right-4 left-0 sm:rounded-r-xl" />
+                <span :for={action <- @action} class="relative ml-4 font-semibold leading-6">
                   <%= render_slot(action, @row_item.(row)) %>
                 </span>
               </div>
@@ -554,10 +612,10 @@ defmodule FabricExWeb.CoreComponents do
 
     ~H"""
     <div class="overflow-y-auto px-4 sm:overflow-visible sm:px-0">
-      <table class="w-[40rem] mt-11 sm:w-full">
-        <thead class="text-sm text-left leading-6 text-zinc-500">
+      <table class="w-[40rem] mt-5 sm:w-full">
+        <thead class="text-sm text-left leading-6">
           <tr>
-            <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal"><%= col[:label] %></th>
+            <th :for={col <- @col} class="p-0 pb-4 pr-5 font-normal"><%= col[:label] %></th>
             <th :if={@action != []} class="relative p-0 pb-4">
               <span class="sr-only"><%= gettext("Actions") %></span>
             </th>
@@ -566,32 +624,29 @@ defmodule FabricExWeb.CoreComponents do
         <tbody
           id={@id}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
+          class="relative divide-y divide-white-100 text-sm leading-6"
         >
           <tr
             :for={row <- @rows}
             id={@row_id && @row_id.(row)}
             phx-click={@row_click && @row_click.(row)}
-            class="group hover:bg-zinc-50"
+            class="group hover"
           >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
               class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div class="block py-4 pr-6">
-                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
-                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
+                <span class="absolute -inset-y-px right-0 -left-4 sm:rounded-l-xl" />
+                <span class={["relative", i == 0 && "font-semibold"]}>
                   <%= render_slot(col, @row_item.(row)) %>
                 </span>
               </div>
             </td>
             <td :if={@action != []} class="relative w-14 p-0">
-              <div class="flex flex-row gap-2">
-                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
-                <span
-                  :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-                >
+              <div class="flex flex-row gap-0">
+                <span class="absolute -inset-y-px -right-4 left-0 sm:rounded-r-xl" />
+                <span :for={action <- @action} class="relative ml-3 font-semibold leading-6">
                   <%= render_slot(action, @row_item.(row)) %>
                 </span>
               </div>
@@ -622,8 +677,8 @@ defmodule FabricExWeb.CoreComponents do
     <div class="mt-14">
       <dl class="-my-4 divide-y divide-zinc-100">
         <div :for={item <- @item} class="flex gap-4 py-4 text-sm leading-6 sm:gap-8">
-          <dt class="w-1/4 flex-none text-zinc-500"><%= item.title %></dt>
-          <dd class="text-zinc-700"><%= render_slot(item) %></dd>
+          <dt class="w-1/4 flex-none"><%= item.title %></dt>
+          <dd class=""><%= render_slot(item) %></dd>
         </div>
       </dl>
     </div>
