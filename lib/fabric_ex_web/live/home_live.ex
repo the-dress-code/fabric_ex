@@ -11,8 +11,8 @@ defmodule FabricExWeb.HomeLive do
     ~H"""
     <%!-- Add Fabric button --%>
 
-    <div class="py-4">
-      <.button type="button" phx-click={show_modal("new-fabric-modal")}>
+    <div class="py-2">
+      <.button class="btn btn-neutral" type="button" phx-click={show_modal("new-fabric-modal")}>
         Add Fabric
       </.button>
     </div>
@@ -63,7 +63,9 @@ defmodule FabricExWeb.HomeLive do
         </datalist>
         <.input field={@form[:width]} type="number" label="Width in Inches" required />
         <.input field={@form[:item_number]} type="text" label="Item #" />
-        <.button type="submit" phx-disable-with="Saving ...">Add Fabric</.button>
+        <.button class="btn btn-neutral" type="submit" phx-disable-with="Saving ...">
+          Add Fabric
+        </.button>
       </.simple_form>
     </.modal>
 
