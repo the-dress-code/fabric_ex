@@ -69,6 +69,7 @@ defmodule FabricExWeb.Router do
     live_session :require_authenticated_user,
       on_mount: [{FabricExWeb.UserAuth, :ensure_authenticated}] do
       live "/home", HomeLive, :index
+      live "/fabrics/:fabric_id/edit", EditLive, :edit
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end

@@ -335,19 +335,9 @@ defmodule FabricExWeb.HomeLive do
   def handle_event("edit_fabric", %{"fabric-id" => fabric_id}, socket) do
     fabric_id = String.to_integer(fabric_id)
 
-    form =
-      Fabrics.get_fabric(fabric_id)
-      |> Fabric.changeset(%{})
-      |> to_form(as: "fabric")
-
     socket =
       socket
-      |> assign(:fabric_row_form, form)
-      |> assign(show_modal: true)
-      |> push_event("js-exec", %{
-        to: "#fabric-#{fabric_id}",
-        attr: "phx-click"
-      })
+      |> push_navigate(to: ~p"/fabrics/#{fabric_id}/edit")
 
     {:noreply, socket}
   end

@@ -24,6 +24,10 @@ defmodule FabricEx.Fabrics do
     Repo.all(query)
   end
 
+  def get_fabric(nil) do
+    %Fabric{}
+  end
+
   def get_fabric(fabric_id) when is_integer(fabric_id) do
     Repo.get(Fabric, fabric_id)
   end
