@@ -71,8 +71,11 @@ defmodule FabricExWeb.HomeLive do
 
     <%!-- Table-View of All Fabrics --%>
 
-    <.table id="fabrics" rows={@fabrics}>
-      <%!-- row_click={fn row -> show_modal("fabric-details-modal-#{row.id}") end} --%>
+    <.table
+      id="fabrics"
+      rows={@fabrics}
+      row_click={fn row -> show_modal("fabric-details-modal-#{row.id}") end}
+    >
       <:col :let={fabric} label="Image"><img src={fabric.image} /></:col>
 
       <:col :let={fabric} label="Yards"><%= fabric.yards %></:col>
