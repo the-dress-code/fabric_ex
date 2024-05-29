@@ -147,95 +147,17 @@ defmodule FabricExWeb.HomeLive do
 
     <%!-- Table-View of All Fabrics --%>
 
-    <.fabric_table
-      id="fabrics"
-      rows={@fabrics}
-      row_id={fn row -> "fabric-#{row.id}" end}
-      row_click={
-        fn row -> if @fabric_row_form[:id].value == row.id, do: show_fabric_row_form(row.id) end
-      }
-    >
+    <.table id="fabrics" rows={@fabrics}>
       <%!-- row_click={fn row -> show_modal("fabric-details-modal-#{row.id}") end} --%>
       <:col :let={fabric} label="Image"><img src={fabric.image} /></:col>
 
-      <:col :let={fabric} label="Yards">
-        <%!-- Hidden Yards Input --%>
-        <div id={"fabric_row_form_#{fabric.id}_yards_input"} class="min-w-20 hidden">
-          <.input
-            field={@fabric_row_form[:yards]}
-            form={"fabric_row_form_#{fabric.id}"}
-            type="number"
-            label=""
-            min=".25"
-            step=".25"
-            required
-          />
-        </div>
-        <%!-- Displayed Yards Value --%>
-        <div id={"fabric_row_form_#{fabric.id}_yards_value"} class="min-w-20">
-          <%= fabric.yards %>
-        </div>
-      </:col>
+      <:col :let={fabric} label="Yards"><%= fabric.yards %></:col>
 
-      <:col :let={fabric} label="Shade">
-        <%!-- Hidden Shade Input AS SEARCH
-        <div id={"fabric_row_form_#{fabric.id}_shade_input"} class="min-w-20 hidden">
-          <.input list="shade_list" field={@fabric_row_form[:shade]} type="search" required />
-          <datalist id="shade_list">
-            <%= for shade_option <- @shade_list do %>
-              <option value={shade_option}></option>
-            <% end %>
-          </datalist>
-        </div> --%>
+      <:col :let={fabric} label="Shade"><%= fabric.shade %></:col>
 
-        <%!-- Hidden Shade Input AS SELECT --%>
+      <:col :let={fabric} label="Color"><%= fabric.color %></:col>
 
-        <div id={"fabric_row_form_#{fabric.id}_shade_input"} class="min-w-20 hidden">
-          <.input
-            field={@fabric_row_form[:shade]}
-            type="select"
-            options={["pastel", "light", "medium", "bright", "dark", "neon"]}
-            required
-          />
-        </div>
-
-        <%!-- Displayed Shade Value --%>
-        <div id={"fabric_row_form_#{fabric.id}_shade_value"} class="min-w-20">
-          <%= fabric.shade %>
-        </div>
-      </:col>
-
-      <:col :let={fabric} label="Color">
-        <%!-- Hidden Color Input --%>
-        <div id={"fabric_row_form_#{fabric.id}_color_input"} class="min-w-20 hidden">
-          <.input list="color_list" field={@fabric_row_form[:color]} type="search" required />
-          <datalist id="color_list">
-            <%= for color_option <- @color_list do %>
-              <option value={color_option}></option>
-            <% end %>
-          </datalist>
-        </div>
-        <%!-- Displayed Color Value --%>
-        <div id={"fabric_row_form_#{fabric.id}_color_value"} class="min-w-20">
-          <%= fabric.color %>
-        </div>
-      </:col>
-
-      <:col :let={fabric} label="Weight">
-        <%!-- Hidden Weight Input --%>
-        <div id={"fabric_row_form_#{fabric.id}_weight_input"} class="min-w-20 hidden">
-          <.input list="weight_list" field={@fabric_row_form[:weight]} type="search" required />
-          <datalist id="weight_list">
-            <%= for weight_option <- @weight_list do %>
-              <option value={weight_option}></option>
-            <% end %>
-          </datalist>
-        </div>
-        <%!-- Displayed Weight Value --%>
-        <div id={"fabric_row_form_#{fabric.id}_weight_value"} class="min-w-20">
-          <%= fabric.weight %>
-        </div>
-      </:col>
+      <:col :let={fabric} label="Weight"><%= fabric.weight %></:col>
 
       <:col :let={fabric} label="Structure"><%= fabric.structure %></:col>
 
@@ -245,24 +167,6 @@ defmodule FabricExWeb.HomeLive do
 
       <:col :let={fabric} label="Item #"><%= fabric.item_number %></:col>
 
-      <:action :let={fabric}>
-        <.link
-          id={"cancel_icon_#{fabric.id}"}
-          class="hidden"
-          phx-click={hide_fabric_row_form(fabric.id)}
-        >
-          <.icon name="hero-x-mark" class="h-4 w-4" />
-        </.link>
-      </:action>
-      <:action :let={fabric}>
-        <.link
-          id={"save_icon_#{fabric.id}"}
-          class="hidden"
-          phx-click={JS.dispatch("app:requestSubmit", to: "#fabric_row_form_#{fabric.id}")}
-        >
-          <.icon name="hero-check" class="h-4 w-4" />
-        </.link>
-      </:action>
       <:action :let={fabric}>
         <.link
           id={"edit_icon_#{fabric.id}"}
@@ -283,7 +187,7 @@ defmodule FabricExWeb.HomeLive do
           <.icon name="hero-trash" class="h-4 w-4" />
         </.link>
       </:action>
-    </.fabric_table>
+    </.table>
 
     <%!-- Image-Grid-View of All Fabrics--%>
 
@@ -314,32 +218,10 @@ defmodule FabricExWeb.HomeLive do
         </FabricComponents.details_card>
       </div>
     </.modal>
-
-    <%!-- Fabric Edit Details Modal --%>
-
-    <%!-- To be continued... --%>
-
-    <%= if @show_modal do %>
-      <.modal id="fabric-edit-details-modal">
-        <div phx-click-away={hide_modal("fabric-edit-details-modal")}>
-          <FabricComponents.edit_details_card
-            form={@form}
-            shade_list={@shade_list}
-            color_list={@color_list}
-            weight_list={@weight_list}
-            structure_list={@structure_list}
-            content_list={@content_list}
-            uploads={@uploads}
-          />
-        </div>
-      </.modal>
-    <% end %>
     """
   end
 
   def mount(_params, _session, socket) do
-    IO.inspect("Mounting")
-
     form =
       %Fabric{}
       |> Fabric.changeset(%{})
@@ -351,7 +233,6 @@ defmodule FabricExWeb.HomeLive do
       socket
       |> assign(show_modal: false)
       |> assign(form: form)
-      |> assign(fabric_row_form: form)
       |> assign(page_title: "My Fabric Stash")
       |> assign(fabrics: fabrics)
 
@@ -429,36 +310,6 @@ defmodule FabricExWeb.HomeLive do
       |> allow_upload(:image, accept: ~w(.png .jpg), max_entries: 1)
 
     {:ok, socket}
-  end
-
-  def show_fabric_row_form(js \\ %JS{}, fabric_id) do
-    js
-    |> JS.show(to: "#fabric_row_form_#{fabric_id}_yards_input")
-    |> JS.hide(to: "#fabric_row_form_#{fabric_id}_yards_value")
-    |> JS.show(to: "#fabric_row_form_#{fabric_id}_shade_input")
-    |> JS.hide(to: "#fabric_row_form_#{fabric_id}_shade_value")
-    |> JS.show(to: "#fabric_row_form_#{fabric_id}_color_input")
-    |> JS.hide(to: "#fabric_row_form_#{fabric_id}_color_value")
-    |> JS.show(to: "#fabric_row_form_#{fabric_id}_weight_input")
-    |> JS.hide(to: "#fabric_row_form_#{fabric_id}_weight_value")
-    |> JS.show(to: "#cancel_icon_#{fabric_id}")
-    |> JS.show(to: "#save_icon_#{fabric_id}")
-    |> JS.hide(to: "#edit_icon_#{fabric_id}")
-  end
-
-  def hide_fabric_row_form(js \\ %JS{}, fabric_id) do
-    js
-    |> JS.hide(to: "#fabric_row_form_#{fabric_id}_yards_input")
-    |> JS.show(to: "#fabric_row_form_#{fabric_id}_yards_value")
-    |> JS.hide(to: "#fabric_row_form_#{fabric_id}_shade_input")
-    |> JS.show(to: "#fabric_row_form_#{fabric_id}_shade_value")
-    |> JS.hide(to: "#fabric_row_form_#{fabric_id}_color_input")
-    |> JS.show(to: "#fabric_row_form_#{fabric_id}_color_value")
-    |> JS.hide(to: "#fabric_row_form_#{fabric_id}_weight_input")
-    |> JS.show(to: "#fabric_row_form_#{fabric_id}_weight_value")
-    |> JS.hide(to: "#cancel_icon_#{fabric_id}")
-    |> JS.hide(to: "#save_icon_#{fabric_id}")
-    |> JS.show(to: "#edit_icon_#{fabric_id}")
   end
 
   @impl true
