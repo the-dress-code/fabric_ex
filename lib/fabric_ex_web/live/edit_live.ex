@@ -23,7 +23,7 @@ defmodule FabricExWeb.EditLive do
       </div>
       <.label for={@uploads.image.ref}>Image</.label>
 
-      <.live_file_input upload={@uploads.image} />
+      <.live_file_input upload={@uploads.image} optional />
       <.input field={@form[:yards]} type="number" label="Yards" min=".25" step=".25" required />
       <.input list="shade_list" field={@form[:shade]} type="search" label="Shade" required />
       <datalist id="shade_list">
