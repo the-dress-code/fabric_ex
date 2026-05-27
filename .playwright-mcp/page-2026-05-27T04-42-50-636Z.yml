@@ -1,0 +1,61 @@
+- generic [active] [ref=e1]:
+  - list [ref=e2]:
+    - listitem [ref=e3]:
+      - link "Register" [ref=e4] [cursor=pointer]:
+        - /url: /users/register
+    - listitem [ref=e5]:
+      - link "Log in" [ref=e6] [cursor=pointer]:
+        - /url: /users/log_in
+    - listitem [ref=e7]:
+      - checkbox [ref=e8] [cursor=pointer]
+  - banner [ref=e9]:
+    - link "Fabric Stash" [ref=e10] [cursor=pointer]:
+      - /url: /home
+  - main [ref=e11]:
+    - generic [ref=e12]:
+      - img [ref=e14]
+      - generic [ref=e23]:
+        - img [ref=e24]
+        - heading "Phoenix Framework v1.7.11" [level=1] [ref=e26]:
+          - text: Phoenix Framework
+          - generic [ref=e27]: v1.7.11
+        - paragraph [ref=e28]: Peace of mind from prototype to production.
+        - paragraph [ref=e29]: Build rich, interactive web applications quickly, with less code and fewer moving parts. Join our growing community of developers using Phoenix to craft APIs, HTML5 apps and more, for fun or at scale.
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - link "Guides & Docs" [ref=e33] [cursor=pointer]:
+              - /url: https://hexdocs.pm/phoenix/overview.html
+              - generic [ref=e35]:
+                - img [ref=e36]
+                - text: Guides & Docs
+            - link "Source Code" [ref=e39] [cursor=pointer]:
+              - /url: https://github.com/phoenixframework/phoenix
+              - generic [ref=e41]:
+                - img [ref=e42]
+                - text: Source Code
+            - link "Changelog" [ref=e44] [cursor=pointer]:
+              - /url: https://github.com/phoenixframework/phoenix/blob/v1.7.11/CHANGELOG.md
+              - generic [ref=e46]:
+                - img [ref=e47]
+                - text: Changelog
+          - generic [ref=e49]:
+            - link "Follow on Twitter" [ref=e51] [cursor=pointer]:
+              - /url: https://twitter.com/elixirphoenix
+              - img [ref=e52]
+              - text: Follow on Twitter
+            - link "Discuss on the Elixir Forum" [ref=e55] [cursor=pointer]:
+              - /url: https://elixirforum.com
+              - img [ref=e56]
+              - text: Discuss on the Elixir Forum
+            - link "Chat on Libera IRC" [ref=e59] [cursor=pointer]:
+              - /url: https://web.libera.chat/#elixir
+              - img [ref=e60]
+              - text: Chat on Libera IRC
+            - link "Join our Discord server" [ref=e64] [cursor=pointer]:
+              - /url: https://discord.gg/elixir
+              - img [ref=e65]
+              - text: Join our Discord server
+            - link "Deploy your application" [ref=e68] [cursor=pointer]:
+              - /url: https://fly.io/docs/elixir/getting-started/
+              - img [ref=e69]
+              - text: Deploy your application
