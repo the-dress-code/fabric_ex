@@ -38,3 +38,12 @@ fabric_ex-*.tar
 npm-debug.log
 /assets/node_modules/
 
+
+# Claude Code personal/per-machine settings (settings.json itself IS committed)
+.claude/settings.local.json
+
+# OS / editor cruft
+.DS_Store
+.vscode/
+.idea/
+*.swp
