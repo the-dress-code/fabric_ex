@@ -3,3 +3,13 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+
+/* Restore DaisyUI's toggle knob (box-shadow) on focus — Tailwind Forms'
+   focus styling overwrites .toggle's knob shadow in Chromium, hiding the
+   circle while the input is focused. */
+.toggle:focus,
+.toggle:focus-visible {
+  box-shadow:
+    var(--handleoffsetcalculator) 0 0 2px var(--tglbg) inset,
+    0 0 0 2px var(--tglbg) inset;
+}
