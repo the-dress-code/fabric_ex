@@ -12,50 +12,41 @@
     </script>
   </head>
   <body class="antialiased">
-    <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end py-2">
-      <%= if @current_user do %>
-        <li class="text-[0.8125rem] leading-6">
-          <%= @current_user.email %>
-        </li>
+    <div class="px-4 sm:px-6 lg:px-8">
+      <ul class="relative z-10 flex items-center gap-4 mx-auto max-w-6xl justify-end py-2">
+        <%= if @current_user do %>
+          <li class="text-[0.8125rem] leading-6">
+            <%= @current_user.email %>
+          </li>
+          <li>
+            <.link href={~p"/users/settings"} class="text-[0.8125rem] leading-6 font-semibold">
+              Settings
+            </.link>
+          </li>
+          <li>
+            <.link
+              href={~p"/users/log_out"}
+              method="delete"
+              class="text-[0.8125rem] leading-6 font-semibold"
+            >
+              Log out
+            </.link>
+          </li>
+        <% end %>
         <li>
-          <.link href={~p"/users/settings"} class="text-[0.8125rem] leading-6 font-semibold">
-            Settings
-          </.link>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <.icon name="hero-moon" class="h-4 w-4" />
+            <input
+              type="checkbox"
+              value="light"
+              class="toggle theme-controller"
+              aria-label="Toggle dark mode"
+            />
+            <.icon name="hero-sun" class="h-4 w-4" />
+          </label>
         </li>
-        <li>
-          <.link
-            href={~p"/users/log_out"}
-            method="delete"
-            class="text-[0.8125rem] leading-6 font-semibold"
-          >
-            Log out
-          </.link>
-        </li>
-      <% else %>
-        <li>
-          <.link href={~p"/users/register"} class="text-[0.8125rem] leading-6  font-semibold">
-            Register
-          </.link>
-        </li>
-        <li>
-          <.link href={~p"/users/log_in"} class="text-[0.8125rem] leading-6 font-semibold">
-            Log in
-          </.link>
-        </li>
-      <% end %>
-      <li>
-        <label class="flex items-center gap-2 cursor-pointer">
-          <.icon name="hero-moon" class="h-4 w-4" />
-          <input
-            type="checkbox"
-            value="light"
-            class="toggle theme-controller"
-            aria-label="Toggle dark mode"
-          />
-          <.icon name="hero-sun" class="h-4 w-4" />
-        </label>
-      </li>
-    </ul>
+      </ul>
+    </div>
     <%= @inner_content %>
   </body>
 </html>
