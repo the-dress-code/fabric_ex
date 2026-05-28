@@ -2,8 +2,8 @@ defmodule FabricExWeb.PageController do
   use FabricExWeb, :controller
 
   def home(conn, _params) do
-    # The home page is often custom made,
-    # so skip the default app layout.
-    render(conn, :home)
+    # The landing page uses its own hero layout — skip app.html.heex
+    # so we render directly inside root.html.heex.
+    render(conn, :home, layout: false)
   end
 end

@@ -1,8 +1,10 @@
 defmodule FabricExWeb.PageControllerTest do
   use FabricExWeb.ConnCase
 
-  test "GET /", %{conn: conn} do
+  test "GET / renders the Fabric Stash hero", %{conn: conn} do
     conn = get(conn, ~p"/")
-    assert html_response(conn, 200) =~ "Peace of mind from prototype to production"
+    body = html_response(conn, 200)
+    assert body =~ "Fabric Stash"
+    assert body =~ "Shop your stash before you sew."
   end
 end
