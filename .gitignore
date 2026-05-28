@@ -42,6 +42,12 @@ npm-debug.log
 # Claude Code personal/per-machine settings (settings.json itself IS committed)
 .claude/settings.local.json
 
+# Playwright MCP session artifacts (snapshots, console logs, screenshots)
+.playwright-mcp/
+
+# Stray screenshots at repo root (ad-hoc Playwright captures)
+/*.png
+
 # OS / editor cruft
 .DS_Store
 .vscode/
