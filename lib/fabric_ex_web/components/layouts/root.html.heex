@@ -44,7 +44,16 @@
         </li>
       <% end %>
       <li>
-        <input type="checkbox" value="light" class="toggle theme-controller" />
+        <label class="flex items-center gap-2 cursor-pointer">
+          <.icon name="hero-moon" class="h-4 w-4" />
+          <input
+            type="checkbox"
+            value="light"
+            class="toggle theme-controller"
+            aria-label="Toggle dark mode"
+          />
+          <.icon name="hero-sun" class="h-4 w-4" />
+        </label>
       </li>
     </ul>
     <%= @inner_content %>
