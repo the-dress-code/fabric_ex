@@ -8,8 +8,8 @@ defmodule FabricExWeb.UserRegistrationLiveTest do
     test "renders registration page", %{conn: conn} do
       {:ok, _lv, html} = live(conn, ~p"/users/register")
 
-      assert html =~ "Register"
-      assert html =~ "Log in"
+      assert html =~ "Register for an account"
+      assert html =~ "Sign in"
     end
 
     test "redirects if already logged in", %{conn: conn} do
@@ -17,7 +17,7 @@ defmodule FabricExWeb.UserRegistrationLiveTest do
         conn
         |> log_in_user(user_fixture())
         |> live(~p"/users/register")
-        |> follow_redirect(conn, "/")
+        |> follow_redirect(conn, "/home")
 
       assert {:ok, _conn} = result
     end
@@ -45,10 +45,10 @@ defmodule FabricExWeb.UserRegistrationLiveTest do
       render_submit(form)
       conn = follow_trigger_action(form, conn)
 
-      assert redirected_to(conn) == ~p"/"
+      assert redirected_to(conn) == ~p"/home"
 
       # Now do a logged in request and assert on the menu
-      conn = get(conn, "/")
+      conn = get(conn, "/home")
       response = html_response(conn, 200)
       assert response =~ email
       assert response =~ "Settings"
@@ -81,7 +81,7 @@ defmodule FabricExWeb.UserRegistrationLiveTest do
         |> render_click()
         |> follow_redirect(conn, ~p"/users/log_in")
 
-      assert login_html =~ "Log in"
+      assert login_html =~ "Sign in to account"
     end
   end
 end
