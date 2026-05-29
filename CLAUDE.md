@@ -19,13 +19,11 @@ Two contexts: `FabricEx.Accounts` (phx.gen.auth, user auth) and `FabricEx.Fabric
 
 See `docs/architecture.md` for the full map — schema fields, LiveViews, file uploads, routing/auth scopes, and custom components.
 
-<!-- Product vision: docs/prelim_vision.md (to be written) -->
-<!-- For now, ask before assuming product direction; treat the codebase as the source of truth for *what is*, not *what should be*. -->
-
 ## Docs
 
 - `docs/architecture.md` — how the code is structured (reference).
-- `docs/prelim_vision.md` — product vision and direction *(planned; not yet written — don't infer its contents)*.
+- `docs/vision.md` — product vision and roadmap, with `[v1]` / `[later]` tags (intended direction; the code remains the source of truth for what's actually built).
+- `docs/orig_vision.md` — the original hand-written vision brief, kept for reference.
 
 ## Browser verification (Playwright MCP)
 
