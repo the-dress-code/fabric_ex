@@ -53,6 +53,7 @@ defmodule FabricExWeb.Router do
     get "/", PageController, :home
 
     live_session :redirect_if_user_is_authenticated,
+      layout: {FabricExWeb.Layouts, :auth},
       on_mount: [{FabricExWeb.UserAuth, :redirect_if_user_is_authenticated}] do
       live "/users/register", UserRegistrationLive, :new
       live "/users/log_in", UserLoginLive, :new
