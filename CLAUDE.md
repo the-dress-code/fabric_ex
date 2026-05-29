@@ -13,38 +13,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
-Phoenix 1.7 LiveView app ("Fabric Stash") for managing a personal fabric inventory. Uses PostgreSQL, Tailwind CSS, esbuild, and Bandit as the HTTP server.
+Phoenix 1.7 LiveView app ("Fabric Stash") for managing a personal fabric inventory. Stack: PostgreSQL, Tailwind CSS, esbuild, Bandit.
 
-### Contexts
+Two contexts: `FabricEx.Accounts` (phx.gen.auth, user auth) and `FabricEx.Fabrics` (user-scoped CRUD). Main UI is `HomeLive` (`/home`); editing is `EditLive`.
 
-- **`FabricEx.Accounts`** — phx.gen.auth-generated user authentication (bcrypt, session-based). Handles registration, login, password reset, email confirmation via Swoosh (local adapter in dev, viewable at `/dev/mailbox`).
-- **`FabricEx.Fabrics`** — CRUD for fabric records. Fabrics belong to a user; all queries are scoped by `user_id`.
+See `docs/architecture.md` for the full map — schema fields, LiveViews, file uploads, routing/auth scopes, and custom components.
 
-### Fabric Schema
+<!-- Product vision: docs/prelim_vision.md (to be written) -->
+<!-- For now, ask before assuming product direction; treat the codebase as the source of truth for *what is*, not *what should be*. -->
 
-Fields: `image` (upload path string), `color`, `shade`, `weight`, `content`, `structure` (all strings with datalist suggestions in the UI), `width` (integer, inches), `yards` (float), `item_number` (optional string).
+## Docs
 
-### LiveViews
-
-- **`HomeLive`** (`/home`) — Main view. Displays fabrics in both a table and an image grid. "Add Fabric" opens a modal with a form including LiveView file upload. Row click opens a details modal using `FabricComponents.details_card/1`. Edit/delete actions per row.
-- **`EditLive`** (`/fabrics/:fabric_id/edit`) — Standalone edit form. Image upload is optional on edit (keeps existing image if none uploaded).
-
-### File Uploads
-
-LiveView uploads stored to `priv/static/uploads/`. Accepts `.png` and `.jpg`, max 1 file per upload. Both `HomeLive` and `EditLive` have their own `consume_files/1` helper that copies the temp file to the uploads directory.
-
-### Routing
-
-Three live_sessions with auth scoping:
-- `:redirect_if_user_is_authenticated` — registration, login, password reset
-- `:require_authenticated_user` — `/home`, `/fabrics/:fabric_id/edit`, user settings
-- `:current_user` — email confirmation (public)
-
-The root `/` route renders `PageController` (landing page), separate from `/home` (authenticated fabric list).
-
-### Custom Components
-
-`FabricExWeb.FabricComponents` provides `details_card/1` (used in HomeLive's detail modals) and `edit_details_card/1` (currently unused — editing uses EditLive directly).
+- `docs/architecture.md` — how the code is structured (reference).
+- `docs/prelim_vision.md` — product vision and direction *(planned; not yet written — don't infer its contents)*.
 
 ## Browser verification (Playwright MCP)
 
