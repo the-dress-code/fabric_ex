@@ -1,6 +1,7 @@
 # TODO
 
 - [x] Verify login + create-account flow works end-to-end from the landing-page CTAs (desktop and mobile).
+- [ ] When a user selects light or dark mode/theme from any page, the theme selection should carry through to all subsequent pages. Right now, if a user selects a theme, it gets reset (to the default, which appears to be dark mode) if they navigate to another page. Another theme related problem - modals open with a dark grey color background, which makes light mode unreadable. There may also be other levels of unreadability related to modals. Verify modals are readable in any theme.
 - [ ] On `/home`, the success flash overlay sits above the top nav and intercepts clicks (e.g. "Log out") until dismissed. Give the flash a lower stacking context or auto-dismiss so nav stays clickable.
 - [x] Decide top-nav scope for unauthenticated pages (landing vs login/register/reset). Resolved 2026-05-28: scoped a `:auth` layout (`Layouts.auth/1`) to the `:redirect_if_user_is_authenticated` live_session; its "Fabric Stash" wordmark links to the landing page (`/`) instead of `/home`.
 - [ ] Email-confirmation pages (`/users/confirm/:token`, `/users/confirm`) are in the `:current_user` live_session and still use the `:app` layout (wordmark → `/home`). A logged-out user confirming email hits the same dead end the `:auth` layout fixed for login/register/reset. Decide whether they should use the `:auth` layout too.
