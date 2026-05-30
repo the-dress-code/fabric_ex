@@ -15,19 +15,34 @@ Fabric Stash is a web app for keeping inventory of the fabric you own and use.
 Early-stage Elixir/Phoenix app. The guiding principle is that it should be
 **very user-friendly**.
 
+## Inventory model
+
+- **One entry per fabric** — each fabric is a single record with one photo, not
+  one record per physical cut. If you buy more of a fabric you already own, you
+  **manually update that fabric's quantity**; the app doesn't detect purchases.
+  Accurate inventory depends on the user updating it both when fabric is *used*
+  and when more is *bought*.
+- **Quantity is a length.** **[v1]** the unit is **yards**. **[later]**
+  user-selectable unit — add a **meters** option (with conversion and a metric
+  step size). Feasibility of making this per-user is itself an open question.
+
 ## The collection grid (the emotional core)
 
-The main page is a photo grid — Instagram-like — with **one photo per cut of
-fabric** in the collection. It's meant to display fabrics in a pleasing way that
-reflects the beauty of the collection.
+The main page is a photo grid — Instagram-like — with **one photo per fabric**
+in the collection. It's meant to display fabrics in a pleasing way that reflects
+the beauty of the collection.
 
 Its deeper purpose is behavioral: inspire people to **shop their own stash
 before acquiring more fabric**. The grid is the hook; the rest of the app keeps
 the data accurate enough for that grid to be honest and useful.
 
+**[v1]** A photo is **required** for every fabric — the grid is the product's
+face, so no entry is photo-less. The only intended social feature is an optional
+**share of the photo grid** (**[later]**); otherwise collections are private.
+
 ## Cataloging a fabric
 
-Each cut of fabric is entered with its details:
+Each fabric is entered with its details:
 
 - **[v1]** Enter details manually.
 - **[v1]** Optional **product listing URL** — a link to the vendor's product
@@ -42,7 +57,7 @@ Each cut of fabric is entered with its details:
 
 ## Tracking & lifecycle
 
-- **[v1]** Track each cut's quantity as it gets used. Quantities are updated by
+- **[v1]** Track each fabric's quantity as it gets used. Quantities are updated by
   editing the fabric entry — the **Yards** field is a number input (step 0.25;
   type a value or use the up/down stepper).
 - **[v1]** Archive a fabric when it runs out. (Implementation detail to settle:
@@ -86,18 +101,28 @@ least 5 yards → filter on quantity (≥ 5), type (woven), kind (natural), weig
 Design principle: **filters must be correct and complete.** No fuzzy matching,
 no guessing, no ranking. A fabric either meets the criteria or it doesn't.
 
-(Field names above are illustrative and not yet finalized.)
+(Which attributes become controlled pick-lists vs. free text — required for
+filters to be reliably "complete" — is still open; see Open questions. Field
+names above are illustrative and not yet finalized.)
 
-## Search — the interpretation tool
+## Search
 
-Search is for asking an **open question** in natural language, where the app is
-allowed to interpret. Example: "which natural fabrics do I have enough of to
-make a longsleeve knit dress in size 16 in a shade of blue?"
+Search is a text box for finding fabrics by criteria. Crucially, the
+**"do I have enough?" reasoning happens in the user's head, not in the app.** The
+user translates their project into explicit criteria and types them; the app just
+returns the fabrics that match.
 
-- **[v1]** For "do I have enough?", the user states the amount they need (e.g.
-  "I need 2.5 yds") and the app matches that against quantities in stock.
+Example (v1): typing **"60in width, lightweight, blue, natural fibers, 5 yards"**
+returns every fabric meeting all those criteria. Width and yardage are criteria
+the *user supplies* — the app does **not** compute garment requirements in v1.
+
+- **[v1]** Match explicit, user-supplied criteria — including width and a minimum
+  yardage. (How the input is interpreted — free-text natural language vs. more
+  structured entry — is still open; see Open questions.)
 - **[later]** **Pattern integration** — the pattern itself supplies the yardage
-  requirement, so the user no longer has to state the amount.
+  requirement, so the user no longer has to state the amount. This is what would
+  enable a true natural-language query like "which natural fabrics do I have
+  enough of to make a longsleeve knit dress in size 16 in a shade of blue?"
 - **[later]** **Search by pattern title / number** — reference a sewing pattern
   by name or number and get back the fabrics that suit it. Example: "show me all
   my fabrics suitable for Simplicity 459" returns all lightweight woven fabrics,
@@ -106,13 +131,27 @@ make a longsleeve knit dress in size 16 in a shade of blue?"
   quantity — view/size determine how much fabric is needed, so without them we
   match on fabric characteristics only, not amount.
 
-Filter and search are complementary, not redundant: **filter is deterministic
-and precise; search is interpretive.**
+Filter and search both return exact matches on the same attributes; the
+difference is input: **filter uses structured controls, search uses a text box.**
+How deeply search interprets free text is still to be decided (see Open
+questions).
 
 ## v1 scope at a glance
 
-- Photo-grid main page (one photo per cut), with low-stock indicators.
+- Photo-grid main page (one entry per fabric; photo required), with low-stock
+  indicators.
 - Manual entry of fabric details; optional product listing URL.
-- Quantity tracking via the edit form; archive when depleted.
+- Quantity in **yards**; manual updates on use and repurchase; archive when
+  depleted.
 - Filter on structured attributes (accurate and complete).
-- Search where the user states the yardage they need.
+- Search by explicit, user-supplied criteria (including width and yardage).
+
+## Open questions (parked)
+
+- **Q3 — Filter taxonomy.** Which attributes are controlled pick-lists vs. free
+  text? Reliable, "complete" filtering depends on enumerated values. To work out
+  together.
+- **Q5 — Search interpretation.** Does search parse free-text natural language
+  into criteria, or take more structured input? To be decided, then documented.
+- **Q1 — Selectable units.** Whether per-user yard/meter selection is feasible
+  for v1 or stays [later]; conversion and metric step size to define when built.
